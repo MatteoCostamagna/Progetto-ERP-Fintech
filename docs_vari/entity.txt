@@ -1,0 +1,17 @@
+- timestamp
+- Entry No_	
+- Item No_	
+- Entry Type	
+- Description	
+- Location Code	
+- Quantity	--> di tempo per produrlo
+- Remaining Quantity	
+- Invoiced Quantity	
+- Transaction Type		
+- Country_Region Code		
+- Area	
+- Order Type		
+- Completely Invoiced		
+- Shipped Qty_ Not Returned	
+- Return Reason Code	
+

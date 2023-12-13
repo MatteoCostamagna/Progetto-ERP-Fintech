@@ -1,0 +1,13 @@
+[timestamp]-
+[Entry No_]-
+[Posting Date]-
+[Type]-
+[Description]-
+[Work Center No_]-
+[Quantity]-
+[Setup Time]-
+[Run Time]-
+[Stop Time]-
+[Invoiced Quantity]-
+[Output Quantity]-
+[Scrap Quantity]-
