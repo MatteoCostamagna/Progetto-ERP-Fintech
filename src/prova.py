@@ -1,13 +1,14 @@
 import pyodbc
 
-server = '127.0.0.1,1433'
+server = 'sql-server-container'
 database = 'Demo Database BC (21-0)'
-username = 'sa'
+username = 'SA'
 password = '/Ferrari499p'
 driver = 'ODBC Driver 17 for SQL Server'  # Use the appropriate driver name
 
 # Construct the connection string
-connection_string = f'DRIVER={{{driver}}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+connection_string = f'driver={driver};server={server};database={database};uid={username};pwd={password}'
+
 
 # Establish the connection
 try:
