@@ -1,3 +1,4 @@
+#Dockerfile per ambiente python fintech-db
 FROM python:3.10-slim
 
 WORKDIR /code
