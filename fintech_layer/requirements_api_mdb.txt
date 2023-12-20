@@ -1,0 +1,7 @@
+pyodbc
+
+mariadb
+
+fastapi
+
+uvicorn
