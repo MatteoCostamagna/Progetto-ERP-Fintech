@@ -1,6 +1,7 @@
 from fastapi import FastAPI 
 from fastapi.encoders import jsonable_encoder
 import pyodbc
+import datetime
 app = FastAPI()
 
 server = 'sql-server-container'
@@ -18,7 +19,7 @@ def read_root():
     conn = pyodbc.connect(connection_string, autocommit=True)
     cursor = conn.cursor()
     cursor.execute("""SELECT
-                    CONVERT(datetime, [timestamp]),
+                    Convert(datetime,[timestamp]),
                     [Entry No_],
                     [Item No_],
                     [Entry Type],
@@ -40,8 +41,10 @@ def read_root():
     result = cursor.fetchall()
     l = []
     for row in result:
+        print(type(row[0]))
+        formatted_date = row[0].strftime('%Y-%m-%d %H:%M:%S')
         x = {
-            "timestamp":row[0],
+            "timestamp": formatted_date.encode('utf-8'),
             "entry_no":row[1],
             "item_no":row[2],
             "entry_type": row[3],
@@ -67,7 +70,7 @@ def get_capacity():
     cursor = conn.cursor()
     cursor.execute("""
                     SELECT
-                        CONVERT(datetime,[timestamp]),
+                        CONVERT(time,CONVERT(datetime,[timestamp])),
                         [Entry No_],
                         [Posting Date],
                         [Type],
