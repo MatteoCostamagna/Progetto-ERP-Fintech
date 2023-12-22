@@ -1,7 +1,7 @@
 from fastapi import FastAPI 
-from fastapi.encoders import jsonable_encoder
 import pyodbc
-import datetime
+from database import Db
+
 app = FastAPI()
 
 server = 'sql-server-container'

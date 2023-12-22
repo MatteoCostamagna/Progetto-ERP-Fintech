@@ -5,12 +5,12 @@ Benvenuto nel repository del progetto Fintech-ERP! Questo progetto è basato su 
 
 ## Istruzioni per l'uso
 
-### 1. Build dell'immagine Docker
+### 1. Build dell'immagine Docker per container python
 
 Posizionati da terminale nella stessa cartella del Dockerfile e esegui il seguente comando:
 
 ```bash
-docker build -t prj-finerp-image .
+docker build -t api-erp-image .
 ``` 
 ### 2. Creazione della rete Docker
 
@@ -25,22 +25,24 @@ docker network create -d bridge etl-network
 
 Esegui il container Python con il seguente comando:
 ```bash
-docker run --network etl-network --name prj-finerp-container -p 80:80 -d -v ${pwd}:/code prj-finerp-image
+docker run --network etl-network --name erp-api-container -p 80:80 -d -v ${pwd}:/code api-erp-image
 ```
+Se hai un sistema diversa da windows usa le parentesi tonde (pwd) al poste delle graffe {pwd}.
 
 ### 4. Configurazione di SQL Server
 
 Per quanto riguarda SQL Server, segui i passaggi seguenti:
 
-Pull dell'immagine da Docker Hub
+Pull dell'immagine da Docker Hub:
 ```bash
 docker pull alvaise/fintech_erp:latest
 ```
+
 Run del container SQL Server
 
 Esegui il container SQL Server con il seguente comando:
 ```bash
-docker run --name sql-server-container --network etl-network -p 1433:1433 alvaise/fintech_erp:latest
+docker run --name sql-server-container -d --network etl-network -p 1433:1433 alvaise/fintech_erp:latest
 ```
 
 
