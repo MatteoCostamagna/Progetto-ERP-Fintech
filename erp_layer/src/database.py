@@ -5,92 +5,30 @@ class Db:
         self.connection_string = connection_string
 
     def connection(self):
+        
         conn = None
+        
         try:
+            
             conn = pyodbc.connect(self.connection_string, autocommit=True)
+        
         except pyodbc.Error as e:
+            
             print(e)
+        
         return conn
 
-    def create_table(self, table_name: str, columns: dict):
-        conn = self.connection()
-        cursor = conn.cursor()
-        query = f"CREATE TABLE IF NOT EXISTS {table_name} ("
-
-        for col_name, col_type in columns.items():
-            query += f"{col_name} {col_type}, "
-
-        query = query[:-2] + ")"
-        cursor.execute(query)
-        conn.commit()
-        conn.close()
-
-    def insert_into_table(self, model: object, table_name: str):
-        conn = self.connection()
-        cursor = conn.cursor()
-        columns_names = model.__dict__
-        #columns_names.pop('id')
-        columns_names = columns_names.keys()
-        query = f"""INSERT INTO {table_name}({",".join(columns_names)})
-            VALUES({",".join(["?" for _ in columns_names])})
-            """
-        data_values = tuple(model.__dict__.values())
-        cursor.execute(query, data_values)
-        conn.commit()
-        conn.close()
-
-    def insert_many_into_table(self, model: list[object], table_name: str):
-        conn = self.connection()
-        cursor = conn.cursor()
-        columns_names = model[0].__dict__
-        #columns_names.pop('id')
-        columns_names = columns_names.keys()
-        query = f"""INSERT INTO {table_name}({",".join(columns_names)})
-                    VALUES({",".join(["?" for _ in columns_names])})
-                    """
-        data_values = [tuple(x.__dict__.values()) for x in model]
-        cursor.executemany(query, data_values)
-        conn.commit()
-        conn.close()
-
-    def drop_table(self, table_name: str):
-        conn = self.connection()
-        cursor = conn.cursor()
-        query = f"""DROP TABLE {table_name}"""
-        cursor.execute(query)
-        conn.commit()
-        conn.close()
-
-    """ def select_one(self, table_name: str):
-        conn = self.connection()
-        conn.row_factory = sqlite3.Row
-        res = conn.execute(f'SELECT * FROM {table_name}')
-        results = res.fetchone()
-        conn.commit()
-        conn.close()
-        return results """
-
-    """ def get_all_by_table(self, table_name: str):
-        conn = self.connection()
-        conn.row_factory = sqlite3.Row
-        res = conn.execute(f'SELECT * FROM {table_name}')
-        results = res.fetchall()
-        conn.commit()
-        conn.close()
-        return results """
-
-    def delete_from_table_by_id(self, table_name: str, id: int):
-        conn = self.connection()
-        cursor = conn.cursor()
-        query = f"""DELETE FROM {table_name} WHERE id = ?"""
-        cursor.execute(query, (id,))
-        conn.commit()
-        conn.close()
     def get_capacity(self):
+        
+        l = []
+        
         conn = self.connection()
+        
         cursor = conn.cursor()
-        query = """SELECT
-                        [timestamp],
+        
+        cursor.execute("""
+                    SELECT
+                        CONVERT(time,CONVERT(datetime,[timestamp])),
                         [Entry No_],
                         [Posting Date],
                         [Type],
@@ -106,15 +44,42 @@ class Db:
                     FROM
                         [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Capacity Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972]
                     ;
-                    """
-        res = cursor.execute(query)
-        results = res.fetchall()
-        return results
+                    """)
+    
+        result = cursor.fetchall()
+    
+        for row in result:
+        
+            x = {
+                "timestamp": row[0],
+                "entry_no": row[1],
+                "posting_date": row[2],
+                "type": row[3],
+                "Description": row[4],
+                "work_center_no_": row[5],
+                "quantity": row[6],
+                "setup_time": row[7],
+                "run_time": row[8],
+                "stop_time": row[9],
+                "invoiced_quantity": row[10],
+                "output_quantity": row[11],
+                "scrap_quantity": row[12]
+                }
+        
+        l.append(x)
+    
+        return l
+    
     def get_item(self):
+        
+        l = []
+        
         conn = self.connection()
+        
         cursor = conn.cursor()
-        query = """SELECT
-                    [timestamp],
+
+        cursor.execute("""SELECT
+                    Convert(datetime,[timestamp]),
                     [Entry No_],
                     [Item No_],
                     [Entry Type],
@@ -132,8 +97,32 @@ class Db:
                     [Return Reason Code]
                 FROM
                     [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972];
-                    """
-        res = cursor.execute(query)
-        results = res.fetchall()
-        conn.close()
-        return results
+                    """)
+        result = cursor.fetchall()
+    
+        for row in result:
+            
+            formatted_date = row[0].strftime('%Y-%m-%d %H:%M:%S')
+            
+            x = {
+                "timestamp": formatted_date.encode('utf-8'),
+                "entry_no":row[1],
+                "item_no":row[2],
+                "entry_type": row[3],
+                "description": row[4],
+                "location_code": row[5],
+                "quantity": row[6],
+                "remaining_quantity": row[7],
+                "invoiced_quantity": row[8],
+                "transaction_type": row[9],
+                "country_region_code": row[10],
+                "area": row[11],
+                "order_type": row[12],
+                "completely_invoiced": row[13],
+                "shipped_qty_not_returned": row[14],
+                "return_reason_code":row[15]
+                }
+            l.append(x)
+        
+        return l
+            
