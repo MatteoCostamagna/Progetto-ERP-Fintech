@@ -28,7 +28,7 @@ class Db:
         
         cursor.execute("""
                     SELECT
-                        CONVERT(time,CONVERT(datetime,[timestamp])),
+                        CONVERT(bigint,[timestamp])),
                         [Entry No_],
                         [Posting Date],
                         [Type],
@@ -79,7 +79,7 @@ class Db:
         cursor = conn.cursor()
 
         cursor.execute("""SELECT
-                    Convert(datetime,[timestamp]),
+                    Convert(bigint,[timestamp]),
                     [Entry No_],
                     [Item No_],
                     [Entry Type],
@@ -102,10 +102,8 @@ class Db:
     
         for row in result:
             
-            formatted_date = row[0].strftime('%Y-%m-%d %H:%M:%S')
-            
             x = {
-                "timestamp": formatted_date.encode('utf-8'),
+                "timestamp": row[0],
                 "entry_no":row[1],
                 "item_no":row[2],
                 "entry_type": row[3],

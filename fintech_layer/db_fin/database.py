@@ -53,12 +53,14 @@ class Db:
         try:
             
             cursor.execute(query)
+            conn.commit()
         
         except mariadb.Error as e:
             
             print(f'Error:{e}')
         
         #Closing the connection no matter if query has gone well
+        cursor.close()
         conn.close()
 
     #Method for insert many rows in a table
@@ -86,10 +88,13 @@ class Db:
         try:
             
             cursor.executemany(query, data_values)
+            conn.commit()
+            print("Data added to the db")
         
         except mariadb.Error as e:
             
-            print("Error:{e}")
+            print(f'Error:{e}')
         
         #Closing the connection
+        cursor.close()
         conn.close()
