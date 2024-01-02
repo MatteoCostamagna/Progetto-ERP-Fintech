@@ -98,3 +98,30 @@ class Db:
         #Closing the connection
         cursor.close()
         conn.close()
+
+    def get_timestamps(self, table_name:str):
+        
+        conn = self.connection()
+
+        cursor = conn.cursor()
+
+        query = f"SELECT timestamp FROM {table_name}"
+
+        l = []
+        try:
+            
+            cursor.execute(query)
+            
+            for (timestamp) in cursor:
+                
+                x = {"timestamp":timestamp}
+                
+                l.append(x)
+            
+            return l
+        
+        except mariadb.Error as e:
+        
+            print(f'Error:{e}')
+        
+            return {'Error':e}

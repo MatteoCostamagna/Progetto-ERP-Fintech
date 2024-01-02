@@ -6,6 +6,7 @@ class ItemLedgerEntry(BaseModel):
     timestamp: int
     entry_no: int
     item_no: str
+    posting_date: datetime
     entry_type: int
     description: str
     location_code: str
@@ -25,7 +26,8 @@ class ItemLedgerEntry(BaseModel):
         return {
             "timestamp": "BIGINT",
             "entry_no": "INT",
-            "item_no" : "VARCHAR(4)",
+            "item_no" : "VARCHAR(25)",
+            "posting_date": "DATETIME",
             "entry_type": "TINYINT",
             "description": "TEXT",
             "location_code":"TEXT",
@@ -43,18 +45,18 @@ class ItemLedgerEntry(BaseModel):
     
 class CapacityLedgerEntry(BaseModel):
     timestamp: int
-    Entry_No: int
-    Posting_Date: datetime
-    Type: int
-    Description: str
-    Work_Center_No: str
-    Quantity: float
-    Setup_Time: float
-    Run_Time: float
-    Stop_Time: float
-    Invoiced_Quantity: float
-    Output_Quantity: float
-    Scrap_Quantity: float
+    entry_no: int
+    posting_date: datetime
+    type: int
+    description: str
+    work_center_no: str
+    quantity: float
+    setup_time: float
+    run_time: float
+    stop_time: float
+    invoiced_quantity: float
+    output_quantity: float
+    scrap_quantity: float
 
     @staticmethod
     def dict_rep_for_mariadb():

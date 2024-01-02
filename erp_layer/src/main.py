@@ -15,9 +15,13 @@ connection_string = f'driver={driver};server={server};database={database};uid={u
 db = Db(connection_string=connection_string)
 
 @app.get("/item")
-def get_item():
+async def get_item():
     return db.get_item()
 
 @app.get("/capacity")
-def get_capacity():
+async def get_capacity():
     return db.get_capacity()
+
+@app.get("/timestamp/capacity")
+async def get_timestamps_capacity():
+    return db.get_timestamps_capacity()

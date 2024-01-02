@@ -28,7 +28,7 @@ class Db:
         
         cursor.execute("""
                     SELECT
-                        CONVERT(bigint,[timestamp])),
+                        CONVERT(bigint,[timestamp]),
                         [Entry No_],
                         [Posting Date],
                         [Type],
@@ -55,7 +55,7 @@ class Db:
                 "entry_no": row[1],
                 "posting_date": row[2],
                 "type": row[3],
-                "Description": row[4],
+                "description": row[4],
                 "work_center_no_": row[5],
                 "quantity": row[6],
                 "setup_time": row[7],
@@ -66,7 +66,7 @@ class Db:
                 "scrap_quantity": row[12]
                 }
         
-        l.append(x)
+            l.append(x)
     
         return l
     
@@ -82,6 +82,7 @@ class Db:
                     Convert(bigint,[timestamp]),
                     [Entry No_],
                     [Item No_],
+                    [Posting Date],
                     [Entry Type],
                     [Description],
                     [Location Code],
@@ -106,21 +107,49 @@ class Db:
                 "timestamp": row[0],
                 "entry_no":row[1],
                 "item_no":row[2],
-                "entry_type": row[3],
-                "description": row[4],
-                "location_code": row[5],
-                "quantity": row[6],
-                "remaining_quantity": row[7],
-                "invoiced_quantity": row[8],
-                "transaction_type": row[9],
-                "country_region_code": row[10],
-                "area": row[11],
-                "order_type": row[12],
-                "completely_invoiced": row[13],
-                "shipped_qty_not_returned": row[14],
-                "return_reason_code":row[15]
+                "posting_date":row[3],
+                "entry_type": row[4],
+                "description": row[5],
+                "location_code": row[6],
+                "quantity": row[7],
+                "remaining_quantity": row[8],
+                "invoiced_quantity": row[9],
+                "transaction_type": row[10],
+                "country_region_code": row[11],
+                "area": row[12],
+                "order_type": row[13],
+                "completely_invoiced": row[14],
+                "shipped_qty_not_returned": row[15],
+                "return_reason_code":row[16]
                 }
             l.append(x)
         
         return l
+    
+    def get_timestamps_capacity(self):
+        
+        conn = self.connection()
+
+        cursor = conn.cursor()
+
+        query = f"SELECT convert(bigint,[timestamp]) FROM [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Capacity Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972];"
+
+        l = []
+        
+        try:
+            
+            cursor.execute(query)
+            
+            for row in cursor:
+                
+                x = {"timestamp":row[0]}
+                
+                l.append(x)
+            
+            return l
+        
+        except pyodbc.Error as e:
+        
+            print(f'Error:{e}')
+            return {'Error': e}
             

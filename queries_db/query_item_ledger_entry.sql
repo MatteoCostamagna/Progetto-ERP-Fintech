@@ -2,6 +2,7 @@ SELECT
     [timestamp],
     [Entry No_],
     [Item No_],
+    [Posting Date],
     [Entry Type],
     [Description],
     [Location Code],
