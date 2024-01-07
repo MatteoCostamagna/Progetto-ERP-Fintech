@@ -1,4 +1,5 @@
-from fastapi import FastAPI 
+from typing import List
+from fastapi import FastAPI, Query
 from database import Db
 
 app = FastAPI()
@@ -25,3 +26,15 @@ async def get_capacity():
 @app.get("/timestamp/capacity")
 async def get_timestamps_capacity():
     return db.get_timestamps_capacity()
+
+@app.get("/timestamp/item")
+async def get_timestamps_item():
+    return db.get_timestamps_item()
+
+@app.get("/item/")
+async def get_item_by_ts(timestamps: List[int] = Query(..., description="List of timestamps")):
+    return db.get_item_by_ts(tuple(timestamps))
+
+@app.get("/capacity/")
+async def get_capacity_by_ts(timestamps: List[int] = Query(..., description="List of timestamps")):
+    return db.get_capacity_by_ts(tuple(timestamps))

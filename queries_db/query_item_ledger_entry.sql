@@ -1,5 +1,5 @@
 SELECT
-    [timestamp],
+    convert(bigint,[timestamp]) as timestamp,
     [Entry No_],
     [Item No_],
     [Posting Date],
