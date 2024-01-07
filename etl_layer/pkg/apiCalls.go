@@ -2,15 +2,18 @@ package pkg
 
 import (
 	"encoding/json"
+	"etl-layer/internal"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 )
 
 /*
 Get request for the timestamp
 */
-func get_request_ts(url string , c chan []Timestamp) error {
+func Get_request_ts(url string , c chan []Timestamp) error {
 	
 	resp,err := http.Get(url)
 
@@ -38,6 +41,74 @@ func get_request_ts(url string , c chan []Timestamp) error {
 	return nil
 }
 
-func get_request_erp(url string)  {
+func Get_request_capacity_erp(c chan[]internal.Capacity, timestamp []uint64)  {
+	URL := "http://localhost:80/capacity/"
+
+	u, err := url.Parse(URL)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	q := u.Query()
+
+	for _, ts := range timestamp {
+		q.Add("timestamps", fmt.Sprint(ts))
+	}
+
+	u.RawQuery = q.Encode()
+
+	res, err := http.Get(u.String())
 	
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	var capacity []internal.Capacity
+
+	err = json.NewDecoder(res.Body).Decode(&capacity)
+
+	if err != nil{
+		log.Fatal(err)
+	}
+
+	c <- capacity
+
 }
+
+func Get_request_item_erp(c chan[]internal.Item, timestamp[]uint64)  {
+	URL := "http://localhost:80/item/"
+
+	u, err := url.Parse(URL)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	q := u.Query()
+
+	for _, ts := range timestamp {
+		q.Add("timestamps", fmt.Sprint(ts))
+	}
+
+	u.RawQuery = q.Encode()
+
+	res, err := http.Get(u.String())
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	var item []internal.Item
+
+	err = json.NewDecoder(res.Body).Decode(&item)
+
+	if err != nil{
+		log.Fatal(err)
+	}
+
+	c <- item
+}
+
