@@ -2,74 +2,74 @@ import pyodbc
 
 class Db:
     """
-    Classe per interagire con un database utilizzando il modulo pyodbc.
+    Class for interacting with a database using the pyodbc module.
 
     Args:
-        connection_string (str): La stringa di connessione necessaria per connettersi al database.
+        connection_string (str): The connection string required to connect to the database.
 
     Attributes:
-        connection_string (str): La stringa di connessione utilizzata per la connessione al database.
+        connection_string (str): The connection string used for connecting to the database.
 
     Methods:
-        __init__(connection_string: str): Costruttore della classe, inizializza la stringa di connessione.
+        __init__(connection_string: str): Constructor of the class, initializes the connection string.
         
     """
     def __init__(self, connection_string: str):
         """
-        Costruttore della classe Db.
+        Constructor of the Db class.
 
         Args:
-            connection_string (str): La stringa di connessione necessaria per connettersi al database.
+            connection_string (str): The connection string required to connect to the database.
         """
         self.connection_string = connection_string
 
     def connection(self):
         """
-        Restituisce un oggetto di connessione al database utilizzando la stringa di connessione.
+        Returns a database connection object using the connection string.
 
         Returns:
-            pyodbc.Connection or None: Un oggetto di connessione al database, o None in caso di errore.
+            pyodbc.Connection or None: A database connection object, or None in case of an error.
 
         Notes:
-            Il metodo gestisce eventuali errori di connessione e stampa l'errore in caso di fallimento.
+            The method handles any connection errors and prints the error in case of failure.
         """
         
         conn = None
         
         try:
-            # Tenta di stabilire una connessione al database utilizzando la stringa di connessione fornita 
+            # Tries to establish a connection to the database using the provided connection string 
             conn = pyodbc.connect(self.connection_string, autocommit=True)
         
         except pyodbc.Error as e:
-         # In caso di errore durante la connessione, stampa l'errore       
+           # In case of an error during the connection, prints the error     
             print(e)
         
         return conn
 
     def get_capacity(self):
         """
-        Recupera dati dalla tabella '$Capacity Ledger Entry$' del database e restituisce una lista di dizionari.
+        Retrieves data from the '$Capacity Ledger Entry$' table of the database and returns a list of dictionaries.
 
         Returns:
-            list: Una lista di dizionari contenenti i dati recuperati dalla tabella.
+            list: A list of dictionaries containing data retrieved from the table.
             
         Notes:
-            - Utilizza il metodo `connection` per ottenere un oggetto di connessione al database.
-            - Esegue una query SQL sulla tabella e converte i risultati in una lista di dizionari.
-            - I dati della tabella sono convertiti in dizionari con chiavi significative.
-            - I valori delle colonne numeriche vengono convertiti in float.
-            - Gestisce eventuali errori durante la connessione o l'esecuzione della query, restituendo una lista vuota in caso di fallimento.
+            - Uses the `connection` method to get a database connection object.
+            - Executes an SQL query on the table and converts the results into a list of dictionaries.
+            - Data from the table is converted into dictionaries with meaningful keys.
+            - Values of numeric columns are converted to float.
+            - Handles any errors during connection or query execution, returning an empty list in case of failure.
         """
 
         l = []
         
-        # Ottiene un oggetto di connessione al database
+        # Gets a database connection object
         conn = self.connection()
         
-        # Crea un cursore per eseguire query
+        # Creates a cursor to execute queries
         cursor = conn.cursor()
         
-        # Esegue una query SQL sulla tabella '$Capacity Ledger Entry$'
+        # Executes an SQL query on the '$Capacity Ledger Entry$' table
         cursor.execute("""
                     SELECT
                         CONVERT(bigint,[timestamp]),
@@ -90,11 +90,11 @@ class Db:
                     ;
                     """)
     
-        # Ottiene tutti i risultati della query
+        # Gets all the results of the query
         result = cursor.fetchall()
     
         for row in result:
-        # Converte i risultati in un dizionario e li aggiunge alla lista
+        # Converts the results into a dictionary and adds them to the list
             x = {
                 "timestamp": row[0],
                 "entry_no": row[1],
@@ -117,26 +117,26 @@ class Db:
     
     def get_item(self):
         """
-        Recupera dati dalla tabella '$Item Ledger Entry$' del database e restituisce una lista di dizionari.
+        Retrieves data from the '$Item Ledger Entry$' table of the database and returns a list of dictionaries.
 
         Returns:
-            list: Una lista di dizionari contenenti i dati recuperati dalla tabella.
+            list: A list of dictionaries containing data retrieved from the table.
             
         Notes:
-            - Utilizza il metodo `connection` per ottenere un oggetto di connessione al database.
-            - Esegue una query SQL sulla tabella e converte i risultati in una lista di dizionari.
-            - I dati della tabella sono convertiti in dizionari con chiavi significative.
-            - Gestisce eventuali errori durante la connessione o l'esecuzione della query, restituendo una lista vuota in caso di fallimento.
+            - Uses the `connection` method to get a database connection object.
+            - Executes an SQL query on the table and converts the results into a list of dictionaries.
+            - Data from the table is converted into dictionaries with meaningful keys.
+            - Handles any errors during connection or query execution, returning an empty list in case of failure.
         """
         l = []
         
-        # Ottiene un oggetto di connessione al database
+        # Gets a database connection object
         conn = self.connection()
         
-        # Crea un cursore per eseguire query
+        # Creates a cursor to execute queries
         cursor = conn.cursor()
 
-        # Esegue una query SQL sulla tabella '$Item Ledger Entry$'
+        # Executes an SQL query on the '$Item Ledger Entry$' table
         cursor.execute("""
                 SELECT
                     Convert(bigint,[timestamp]),
@@ -159,11 +159,11 @@ class Db:
                 FROM
                     [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972];
                     """)
-        # Ottiene tutti i risultati della query
+        # Gets all the results of the query
         result = cursor.fetchall()
     
         for row in result:
-            # Converte i risultati in un dizionario e li aggiunge alla lista
+            # Converts the results into a dictionary and adds them to the list
             x = {
                 "timestamp": row[0],
                 "entry_no":row[1],
@@ -189,34 +189,34 @@ class Db:
     
     def get_timestamps_capacity(self):
         """
-        Recupera i timestamp dalla tabella '$Capacity Ledger Entry$' del database e restituisce una lista di dizionari.
+        Retrieves timestamps from the '$Capacity Ledger Entry$' table of the database and returns a list of dictionaries.
 
         Returns:
-            list: Una lista di dizionari contenenti i timestamp recuperati dalla tabella.
+            list: A list of dictionaries containing timestamps retrieved from the table.
             
         Notes:
-            - Utilizza il metodo `connection` per ottenere un oggetto di connessione al database.
-            - Esegue una query SQL per ottenere i timestamp dalla tabella.
-            - Restituisce una lista di dizionari con chiave "timestamp".
-            - Gestisce eventuali errori durante la connessione o l'esecuzione della query, restituendo un dizionario con la chiave "Error" in caso di fallimento.
+            - Uses the `connection` method to get a database connection object.
+            - Executes an SQL query to obtain timestamps from the table.
+            - Returns a list of dictionaries with the key "timestamp".
+            - Handles any errors during connection or query execution, returning a dictionary with the key "Error" in case of failure.
         """
-        
+        # Gets a database connection object
         conn = self.connection()
 
-        # Crea un cursore per eseguire query
+        # Creates a cursor to execute queries
         cursor = conn.cursor()
 
-        # Query SQL per ottenere i timestamp dalla tabella '$Capacity Ledger Entry$'
+        # SQL query to obtain timestamps from the '$Capacity Ledger Entry$' table
         query = f"SELECT convert(bigint,[timestamp]) FROM [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Capacity Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972];"
 
         l = []
         
         try:
             
-            # Esegue la query SQL
+            # Executes the SQL query
             cursor.execute(query)
             
-            # Itera sui risultati e aggiunge i timestamp alla lista
+            # Iterates over the results and adds the timestamps to the list
             for row in cursor:
                 
                 x = {"timestamp":row[0]}
@@ -226,38 +226,39 @@ class Db:
             return l
         
         except pyodbc.Error as e:
-            # Gestisce gli errori di connessione o esecuzione della query, restituendo un dizionario con la chiave "Error"
+            # Handles connection or query execution errors, returning a dictionary with the key "Error"
             print(f'Error:{e}')
             return {'Error': e}
             
     def get_timestamps_item(self):
         """
-        Recupera i timestamp dalla tabella '$Item Ledger Entry$' del database e restituisce una lista di dizionari.
+        Retrieves timestamps from the '$Item Ledger Entry$' table of the database and returns a list of dictionaries.
 
         Returns:
-            list: Una lista di dizionari contenenti i timestamp recuperati dalla tabella.
+            list: A list of dictionaries containing timestamps retrieved from the table.
             
         Notes:
-            - Utilizza il metodo `connection` per ottenere un oggetto di connessione al database.
-            - Esegue una query SQL per ottenere i timestamp dalla tabella.
-            - Restituisce una lista di dizionari con chiave "timestamp".
-            - Gestisce eventuali errori durante la connessione o l'esecuzione della query, restituendo un dizionario con la chiave "Error" in caso di fallimento.
+            - Uses the `connection` method to get a database connection object.
+            - Executes an SQL query to obtain timestamps from the table.
+            - Returns a list of dictionaries with the key "timestamp".
+            - Handles any errors during connection or query execution, returning a dictionary with the key "Error" in case of failure.
         """
+        # Gets a database connection object
         conn = self.connection()
 
-        # Crea un cursore per eseguire query
+        # Creates a cursor to execute queries
         cursor = conn.cursor()
 
-        # Query SQL per ottenere i timestamp dalla tabella '$Item Ledger Entry$'
+        # SQL query to obtain timestamps from the '$Item Ledger Entry$' table
         query = f"SELECT convert(bigint,[timestamp]) FROM [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Item Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972];"
 
         l = []
         
         try:
-            # Esegue la query SQL
+            # Executes the SQL query
             cursor.execute(query)
             
-            # Itera sui risultati e aggiunge i timestamp alla lista
+            # Iterates over the results and adds the timestamps to the list
             for row in cursor:
                 
                 x = {"timestamp":row[0]}
@@ -267,36 +268,36 @@ class Db:
             return l
         
         except pyodbc.Error as e:
-            # Gestisce gli errori di connessione o esecuzione della query, restituendo un dizionario con la chiave "Error"
+            # Handles connection or query execution errors, returning a dictionary with the key "Error"
             print(f'Error:{e}')
             return {'Error': e}
         
     def get_capacity_by_ts(self, ts_to_get):
         """
-        Recupera dati dalla tabella '$Capacity Ledger Entry$' del database per timestamp specifici e restituisce una lista di dizionari.
+        Retrieves data from the '$Capacity Ledger Entry$' table of the database for specific timestamps and returns a list of dictionaries.
 
         Args:
-            ts_to_get (tuple): Una tupla di timestamp per cui recuperare i dati.
+            ts_to_get (tuple): A tuple of timestamps for which to retrieve the data.
 
         Returns:
-            list: Una lista di dizionari contenenti i dati recuperati dalla tabella per i timestamp specificati.
+            list: A list of dictionaries containing data retrieved from the table for the specified timestamps.
 
         Notes:
-            - Utilizza il metodo `connection` per ottenere un oggetto di connessione al database.
-            - Esegue una query SQL sulla tabella filtrando i risultati per i timestamp specificati.
-            - Restituisce una lista di dizionari con chiavi significative.
-            - I valori delle colonne numeriche vengono convertiti in float.
-            - Gestisce eventuali errori durante la connessione, l'esecuzione della query o la conversione dei dati, restituendo una lista vuota in caso di fallimento.
+            - Uses the `connection` method to get a database connection object.
+            - Executes an SQL query on the table, filtering the results for the specified timestamps.
+            - Returns a list of dictionaries with meaningful keys.
+            - Values of numeric columns are converted to float.
+            - Handles any errors during connection, query execution, or data conversion, returning an empty list in case of failure.
         """
         l = []
         
-        # Ottiene un oggetto di connessione al database
+        # Gets a database connection object
         conn = self.connection()
         
-        # Crea un cursore per eseguire query
+        # Creates a cursor to execute queries
         cursor = conn.cursor()
 
-        # Query SQL per ottenere i dati dalla tabella '$Capacity Ledger Entry$' per i timestamp specificati
+        # SQL query to obtain data from the '$Capacity Ledger Entry$' table for specific timestamps
         query =f"""
                SELECT
                         CONVERT(bigint,[timestamp]),
@@ -319,12 +320,12 @@ class Db:
                        ;
                     """
         try:
-            # Esegue la query SQL con i timestamp specificati
+            # Execute the quey with the specified timestamps
             cursor.execute(query,ts_to_get)
             result = cursor.fetchall()
         
             for row in result:
-                # Converte i risultati in un dizionario e li aggiunge alla lista
+                # Converts the results into a dictionary and appends them to the list
                 x = {
                     "timestamp": row[0],
                     "entry_no": row[1],
@@ -344,36 +345,36 @@ class Db:
             
             return l
         except pyodbc.Error as e:
-            # Gestisce gli errori di connessione, esecuzione della query o conversione dei dati, restituendo una lista vuota
+            # Handles errors in connection, query execution, or data conversion, returning an empty list
             print(f'Error:{e}')
             return []
 
     
     def get_item_by_ts(self,ts_to_get:tuple):
         """
-        Recupera dati dalla tabella '$Item Ledger Entry$' del database per timestamp specifici e restituisce una lista di dizionari.
+    Retrieves data from the '$Item Ledger Entry$' table of the database for specific timestamps and returns a list of dictionaries.
 
-        Args:
-            ts_to_get (tuple): Una tupla di timestamp per cui recuperare i dati.
+    Args:
+        ts_to_get (tuple): A tuple of timestamps for which to retrieve the data.
 
-        Returns:
-            list: Una lista di dizionari contenenti i dati recuperati dalla tabella per i timestamp specificati.
+    Returns:
+        list: A list of dictionaries containing data retrieved from the table for the specified timestamps.
 
-        Notes:
-            - Utilizza il metodo `connection` per ottenere un oggetto di connessione al database.
-            - Esegue una query SQL sulla tabella filtrando i risultati per i timestamp specificati.
-            - Restituisce una lista di dizionari con chiavi significative.
-            - Gestisce eventuali errori durante la connessione, l'esecuzione della query o la conversione dei dati, restituendo una lista vuota in caso di fallimento.
-        """
+    Notes:
+        - Uses the `connection` method to get a database connection object.
+        - Executes an SQL query on the table, filtering the results for the specified timestamps.
+        - Returns a list of dictionaries with meaningful keys.
+        - Handles any errors during connection, query execution, or data conversion, returning an empty list in case of failure.
+    """
         l = []
         
-        # Ottiene un oggetto di connessione al database
+        # Gets a database connection object
         conn = self.connection()
         
-        # Crea un cursore per eseguire query
+        # Creates a cursor to execute queries
         cursor = conn.cursor()
 
-        # Query SQL per ottenere i dati dalla tabella '$Item Ledger Entry$' per i timestamp specificati
+        # SQL query to obtain data from the '$Item Ledger Entry$' table for specific timestamps
         query =f"""SELECT
                     Convert(bigint,[timestamp]),
                     [Entry No_],
@@ -399,13 +400,13 @@ class Db:
                        ;
                     """
         try:
-            # Esegue la query SQL con i timestamp specificati
+            # Executes the SQL query with the specified timestamps
             cursor.execute(query,ts_to_get)
             
             result = cursor.fetchall()
         
             for row in result:
-                # Converte i risultati in un dizionario e li aggiunge alla lista
+                # Converts the results into a dictionary and appends them to the list
                 x = {
                     "timestamp": row[0],
                     "entry_no":row[1],
@@ -429,6 +430,6 @@ class Db:
             
             return l
         except pyodbc.Error as e:
-            # Gestisce gli errori di connessione, esecuzione della query o conversione dei dati, restituendo una lista vuota
+            # Handles errors in connection, query execution, or data conversion, returning an empty list
             print(f'Error:{e}')
             return []

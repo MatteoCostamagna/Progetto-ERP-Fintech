@@ -1,7 +1,35 @@
 import mariadb
 
 class Db:
+    """
+    Class for managing the connection to a MariaDB database.
+
+    Args:
+        user (str): User name for connecting to the database.
+        password (str): Password for connecting to the database.
+        host (str): IP address or host name of the database server.
+        port (int): Port of the database server.
+        database (int): Name of the database to connect to.
+
+    Attributes:
+        user (str): User name for connecting to the database.
+        password (str): Password for connecting to the database.
+        host (str): IP address or host name of the database server.
+        port (int): Port of the database server.
+        database (int): Name of the database to connect to.
+    """
+
     def __init__(self,user:str,password:str,host:str,port:int,database:int) -> None:
+        """
+        Initializes an instance of the Db class.
+
+        Args:
+            user (str): User name for connecting to the database.
+            password (str): Password for connecting to the database.
+            host (str): IP address or host name of the database server.
+            port (int): Port of the database server.
+            database (int): Name of the database to connect to.
+        """
         self.user = user
         self.password = password
         self.host = host
