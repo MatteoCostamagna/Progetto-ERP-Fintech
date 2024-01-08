@@ -1,6 +1,7 @@
 package pkg
 
 import (
+	"bytes"
 	"encoding/json"
 	"etl-layer/internal"
 	"fmt"
@@ -112,3 +113,62 @@ func Get_request_item_erp(c chan[]internal.Item, timestamp[]uint64)  {
 	c <- item
 }
 
+func Post_request[T internal.Capacity | internal.Item] (URL string, data[]T) any {
+	
+	jsonData, err := json.Marshal(data)
+
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	res, err := http.Post(URL,"application/json", bytes.NewBuffer(jsonData))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusCreated {
+		fmt.Printf("Error on code received: %d",res.StatusCode)
+	}
+	return res.StatusCode
+}
+
+func Delete_request(URL string, timestamps[]uint64) error{
+	
+	u, err := url.Parse(URL)
+	
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+	q := u.Query()
+
+	for _, ts := range timestamps{
+		q.Add("timestamp",fmt.Sprint(ts))
+	}
+
+	u.RawQuery = q.Encode()
+
+	req, err := http.NewRequest("DELETE",u.String(),nil)
+
+	if err != nil {
+		return fmt.Errorf("failed to create DELETE request: %v", err)
+	}
+	
+	client := http.DefaultClient
+
+	res, err := client.Do(req)
+
+	if err != nil {
+		return fmt.Errorf("failed to perform DELETE request: %v", err)
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return fmt.Errorf("unexpected status code: %d", res.StatusCode)
+	}
+
+	return nil
+}
