@@ -96,8 +96,9 @@ class Db:
             print(f'Error:{e}')
         
         #Closing the connection
-        cursor.close()
-        conn.close()
+        finally:
+            cursor.close()
+            conn.close()
 
     def get_timestamps(self, table_name:str):
         
@@ -124,4 +125,27 @@ class Db:
         
             print(f'Error:{e}')
         
-            return {'Error':e}
+        finally:
+            cursor.close()
+            conn.close
+    
+    def remove_record(self,ts_del:tuple,table_name:str):
+
+        conn = self.connection()
+
+        cursor = conn.cursor()
+
+        query = f"""
+            DELETE FROM {table_name}
+            
+            WHERE timestamp IN ({', '.join(['?' for _ in ts_del])});
+        """
+
+        try:
+            cursor.execute(query,ts_del)
+        except mariadb.Error as e:
+            print(f"Error: {e}")
+
+        finally:
+            cursor.close()
+            conn.close()
