@@ -172,3 +172,27 @@ func Delete_request(URL string, timestamps[]uint64) error{
 
 	return nil
 }
+
+func Get_request_all[T internal.Capacity | internal.Item] (URL string, c chan[]T)  {
+	
+	res, err := http.Get(URL)
+	
+	if err != nil {
+		fmt.Println("Error making get Request: ",err)
+		return
+	}
+	defer res.Body.Close()
+
+	body, err := io.ReadAll(res.Body)
+	
+	if err != nil {
+		fmt.Println("Error reading body: ",err)
+		return
+	}
+
+	var data []T
+	
+	err = json.Unmarshal(body,&data)
+
+	c <-data
+}

@@ -1,8 +1,5 @@
 package pkg
 
-import(
-	
-)
 
 type Timestamp struct{
 	Timestamp uint64 `json:"timestamp"`
