@@ -96,13 +96,13 @@ class CapacityLedgerEntry(BaseModel):
     type: int
     description: str
     work_center_no: str
-    quantity: float
-    setup_time: float
-    run_time: float
-    stop_time: float
-    invoiced_quantity: float
-    output_quantity: float
-    scrap_quantity: float
+    quantity: int
+    setup_time: int
+    run_time: int
+    stop_time: int
+    invoiced_quantity: int
+    output_quantity: int
+    scrap_quantity: int
 
     @staticmethod
     def dict_rep_for_mariadb():
@@ -112,7 +112,7 @@ class CapacityLedgerEntry(BaseModel):
             "posting_date": "DATETIME",
             "type": "INT",
             "description": "TEXT",
-            "work_center_no_": "VARCHAR(255)",
+            "work_center_no": "VARCHAR(255)",
             "quantity": "DECIMAL(38, 0)",
             "setup_time": "DECIMAL(38, 0)",
             "run_time": "DECIMAL(38, 0)",

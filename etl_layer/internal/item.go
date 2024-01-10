@@ -1,12 +1,11 @@
 package internal
 
-import "time"
 
 type Item struct{
 	Timestamp              uint64     `json:"timestamp"`
 	EntryNo                uint     `json:"entry_no"`
 	ItemNo                 string  `json:"item_no"`
-	PostingDate            time.Time  `json:"posting_date"`
+	PostingDate            MyTime  `json:"posting_date"`
 	EntryType              uint     `json:"entry_type"`
 	Description            string  `json:"description"`
 	LocationCode           string  `json:"location_code"`

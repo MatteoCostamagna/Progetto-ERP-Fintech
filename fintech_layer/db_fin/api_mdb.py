@@ -23,7 +23,7 @@ async def root():
     db.connection()
     return {"message": "Hello World"}
 
-@app.post("/upload-item-ledger")
+@app.post("/upload-item-ledger",status_code=201)
 async def upload_item( items_entry : list[ItemLedgerEntry]):
     """
     Endpoint for uploading multiple entries to the 'item_ledger_entry' table.
@@ -37,7 +37,7 @@ async def upload_item( items_entry : list[ItemLedgerEntry]):
     db.insert_many_into_table(items_entry, 'item_ledger_entry')
     return items_entry
 
-@app.post("/upload-capacity-ledger")
+@app.post("/upload-capacity-ledger", status_code=201)
 async def upload_capacity(capacity : list[CapacityLedgerEntry]):
     """
     Endpoint for uploading multiple entries to the 'capacity_ledger_entry' table.
