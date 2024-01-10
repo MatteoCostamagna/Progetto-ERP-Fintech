@@ -22,7 +22,7 @@ func get_values(array[]Timestamp,c chan []uint64) {
 /**
 Function that find the difference value in a array
 */
-func new_values(ts_erp[]Timestamp,ts_fin[]Timestamp) ([]uint64,[]uint64) {
+func New_values(ts_erp[]Timestamp,ts_fin[]Timestamp) ([]uint64,[]uint64) {
 	res_erp := make(chan []uint64)
 	res_fin := make(chan []uint64)
 	go get_values(ts_erp,res_erp)
