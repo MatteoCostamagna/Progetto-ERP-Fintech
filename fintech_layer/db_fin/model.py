@@ -103,6 +103,7 @@ class CapacityLedgerEntry(BaseModel):
     invoiced_quantity: int
     output_quantity: int
     scrap_quantity: int
+    operation_no: int
 
     @staticmethod
     def dict_rep_for_mariadb():
@@ -119,5 +120,6 @@ class CapacityLedgerEntry(BaseModel):
             "stop_time": "DECIMAL(38, 0)",
             "invoiced_quantity": "DECIMAL(38, 0)",
             "output_quantity": "DECIMAL(38, 0)",
-            "scrap_quantity": "DECIMAL(38, 0)"
+            "scrap_quantity": "DECIMAL(38, 0)",
+            "operation_no": "INTEGER"
         }
