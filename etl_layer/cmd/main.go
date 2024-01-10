@@ -4,6 +4,7 @@ import (
 	"etl-layer/internal"
 	"etl-layer/pkg"
 	"fmt"
+	"os"
 	"sync"
 )
 
@@ -74,6 +75,11 @@ func main() {
 	}()
 	itemData := <-finChanItemData
 	capacityData := <-finChanCapacityData
+	if (len(itemData)+ len(capacityData)) == 0 {
+		fmt.Println("There are no new value is itemData and capacityData")
+		os.Exit(1)
+	}
+	
 	fmt.Println("5")
 	fmt.Println("ITEM: ",itemData)
 	fmt.Println("CAPACITY: ",capacityData)
