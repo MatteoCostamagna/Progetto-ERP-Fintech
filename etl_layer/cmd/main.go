@@ -75,9 +75,10 @@ func main() {
 	}()
 	itemData := <-finChanItemData
 	capacityData := <-finChanCapacityData
+	
 	if (len(itemData)+ len(capacityData)) == 0 {
 		fmt.Println("There are no new value is itemData and capacityData")
-		os.Exit(1)
+		os.Exit(0)
 	}
 	
 	fmt.Println("5")
