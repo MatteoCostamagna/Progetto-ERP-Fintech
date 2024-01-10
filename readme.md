@@ -27,7 +27,7 @@ Esegui il container Python con il seguente comando:
 ```bash
 docker run --network etl-network --name erp-api-container -p 80:80 -d -v ${pwd}:/code api-erp-image
 ```
-Se hai un sistema diverso da windows usa le parentesi tonde "(pwd)" al poste delle graffe "{pwd}".
+Se hai un sistema diverso da windows usa le parentesi tonde "(pwd)" al posto delle graffe "{pwd}".
 
 ### 4. Configurazione di SQL Server
 
