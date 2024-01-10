@@ -84,7 +84,8 @@ class Db:
                         [Stop Time],
                         [Invoiced Quantity],
                         [Output Quantity],
-                        [Scrap Quantity]
+                        [Scrap Quantity],
+                        [Operation No_]
                     FROM
                         [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Capacity Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972]
                     ;
@@ -108,7 +109,8 @@ class Db:
                 "stop_time": float(row[9]),
                 "invoiced_quantity": float(row[10]),
                 "output_quantity": float(row[11]),
-                "scrap_quantity": float(row[12])
+                "scrap_quantity": float(row[12]),
+                "operation_no":row[13]
                 }
         
             l.append(x)
@@ -312,7 +314,8 @@ class Db:
                         [Stop Time],
                         [Invoiced Quantity],
                         [Output Quantity],
-                        [Scrap Quantity]
+                        [Scrap Quantity],
+                        [Operation No_]
                     FROM
                         [Demo Database BC (21-0)].[dbo].[CRONUS Italia S_p_A_$Capacity Ledger Entry$437dbf0e-84ff-417a-965d-ed2bb9650972]
                 WHERE 
@@ -339,7 +342,8 @@ class Db:
                     "stop_time": float(row[9]),
                     "invoiced_quantity": float(row[10]),
                     "output_quantity": float(row[11]),
-                    "scrap_quantity": float(row[12])
+                    "scrap_quantity": float(row[12]),
+                    "operation_no":row[13]
                     }
                 l.append(x)
             
