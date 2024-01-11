@@ -46,3 +46,17 @@ docker run --name sql-server-container -d --network etl-network -p 1433:1433 alv
 ```
 
 
+Posizionati con vs code dentro fintech_layer come workspace
+
+Builda l'immagine dal docker file
+
+```bash
+docker build -t api-fintech-db .
+```
+
+Adesso runna il container dell'immagine che hai appena creato
+
+```bash
+docker run --name api-fintech-db -d --network etl-network -p 90:90 api-fintech-db
+```
+
