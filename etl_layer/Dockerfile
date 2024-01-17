@@ -10,7 +10,7 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/my-go-app cmd/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin/etl cmd/main.go
 
 # Add your crontab file
 COPY ./crontab /etc/cron.d/cron-job
